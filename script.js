@@ -5,7 +5,7 @@ const courses = [
     { code: "MATH 1010", name: "Calculus I" },
     { code: "PHYS 1100", name: "Physics I" },
     // First Year Spring
-    { code: "CHEM 1100", name: "Principles of Chemistry I" },
+    { code: "CHEM 1100", name: "Chemistry I" },
     { code: "MANE 1060", name: "Fundamentals of Flight" },
     { code: "MATH 1020", name: "Calculus II" },
     { code: "PHYS 1200", name: "Physics II" },
