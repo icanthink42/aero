@@ -16,6 +16,7 @@ const courses = [
     { code: "MATH 2400", name: "Introduction to Differential Equations" },
     // Second Year Spring
     { code: "ADMN 1030", name: "ARCH Exploration & Planning" },
+    { code: "ENGR 2050", name: "Intro Engineering Design" },
     { code: "ENGR 2600", name: "Modeling and Analysis of Uncertainty" },
     { code: "MANE 2110", name: "Numerical Methods and Programming for Engineers" },
     { code: "MANE 2720", name: "Fluid Mechanics" },
