@@ -142,3 +142,75 @@ h1 {
 .reset-btn:hover {
     background: #d62839;
 }
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+    }
+
+    .tier-row {
+        min-height: 60px;
+    }
+
+    .tier-label {
+        width: 50px;
+        min-width: 50px;
+        font-size: 20px;
+    }
+
+    .tier-items {
+        padding: 6px;
+        gap: 6px;
+        min-height: 60px;
+    }
+
+    .course-item {
+        padding: 6px 8px;
+        max-width: 150px;
+        touch-action: none;
+    }
+
+    .course-code {
+        font-size: 10px;
+    }
+
+    .course-name {
+        font-size: 9px;
+    }
+
+    .unranked-section {
+        margin-top: 20px;
+        padding: 10px;
+    }
+
+    .unranked-section h2 {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    .unranked-items {
+        gap: 6px;
+        padding: 8px;
+        min-height: 80px;
+    }
+}
+
+/* Touch dragging styles */
+.course-item.touch-dragging {
+    position: fixed;
+    z-index: 1000;
+    opacity: 0.9;
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+    pointer-events: none;
+}
+
+.course-item.touch-placeholder {
+    opacity: 0.3;
+}

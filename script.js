@@ -52,10 +52,102 @@ function createCourseElement(course) {
         <div class="course-name">${course.name}</div>
     `;
 
+    // Desktop drag events
     div.addEventListener('dragstart', handleDragStart);
     div.addEventListener('dragend', handleDragEnd);
 
+    // Mobile touch events
+    div.addEventListener('touchstart', handleTouchStart, { passive: false });
+    div.addEventListener('touchmove', handleTouchMove, { passive: false });
+    div.addEventListener('touchend', handleTouchEnd);
+
     return div;
+}
+
+// Touch handling for mobile
+let touchDragElement = null;
+let touchStartX = 0;
+let touchStartY = 0;
+let originalParent = null;
+
+function handleTouchStart(e) {
+    if (e.touches.length !== 1) return;
+
+    const touch = e.touches[0];
+    touchDragElement = e.currentTarget;
+    originalParent = touchDragElement.parentElement;
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+
+    // Create placeholder
+    touchDragElement.classList.add('touch-placeholder');
+
+    // Clone for dragging
+    const rect = touchDragElement.getBoundingClientRect();
+    touchDragElement.style.width = rect.width + 'px';
+
+    setTimeout(() => {
+        if (touchDragElement) {
+            touchDragElement.classList.remove('touch-placeholder');
+            touchDragElement.classList.add('touch-dragging');
+            touchDragElement.style.left = rect.left + 'px';
+            touchDragElement.style.top = rect.top + 'px';
+        }
+    }, 100);
+}
+
+function handleTouchMove(e) {
+    if (!touchDragElement) return;
+    e.preventDefault();
+
+    const touch = e.touches[0];
+    const deltaX = touch.clientX - touchStartX;
+    const deltaY = touch.clientY - touchStartY;
+
+    const rect = touchDragElement.getBoundingClientRect();
+    touchDragElement.style.left = (touch.clientX - rect.width / 2) + 'px';
+    touchDragElement.style.top = (touch.clientY - rect.height / 2) + 'px';
+
+    // Highlight drop zone
+    document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+    const dropZone = getDropZoneAtPoint(touch.clientX, touch.clientY);
+    if (dropZone) {
+        dropZone.classList.add('drag-over');
+    }
+}
+
+function handleTouchEnd(e) {
+    if (!touchDragElement) return;
+
+    const touch = e.changedTouches[0];
+    const dropZone = getDropZoneAtPoint(touch.clientX, touch.clientY);
+
+    // Reset styles
+    touchDragElement.classList.remove('touch-dragging', 'touch-placeholder');
+    touchDragElement.style.position = '';
+    touchDragElement.style.left = '';
+    touchDragElement.style.top = '';
+    touchDragElement.style.width = '';
+
+    document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+
+    if (dropZone && dropZone !== originalParent) {
+        dropZone.appendChild(touchDragElement);
+        saveTierList();
+    }
+
+    touchDragElement = null;
+    originalParent = null;
+}
+
+function getDropZoneAtPoint(x, y) {
+    const elements = document.elementsFromPoint(x, y);
+    for (const el of elements) {
+        if (el.classList.contains('tier-items') || el.classList.contains('unranked-items')) {
+            return el;
+        }
+    }
+    return null;
 }
 
 function handleDragStart(e) {
